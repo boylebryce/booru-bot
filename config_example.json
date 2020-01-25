@@ -1,0 +1,6 @@
+{
+    "token": "Your bot token goes here",
+    "api": "Your API URI goes here",
+    "images": "Image directory goes here",
+    "prefix": "!"
+}
