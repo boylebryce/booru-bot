@@ -1,34 +1,30 @@
-const config = require('./config.json');
-const fetch = require('node-fetch');
+const fs = require('fs');
 const Discord = require('discord.js');
+const { prefix, token } = require('./config.json');
+
 const client = new Discord.Client();
+client.commands = new Discord.Collection();
+
+const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
+
+for (const file of commandFiles) {
+    const command = require(`./commands/${file}`);
+    client.commands.set(command.name, command);
+}
 
 client.once('ready', () => {
     console.log('Ready!');
 });
 
-client.login(config.token);
+client.login(token);
 
 client.on('message', message => {
-    if (!message.content.startsWith(config.prefix) || message.author.bot) return;
+    if (!message.content.startsWith(prefix) || message.author.bot) return;
 
-    const args = message.content.slice(config.prefix.length).split(/ +/);
+    const args = message.content.slice(prefix.length).split(/ +/);
     const command = args.shift().toLowerCase();
 
     if (command === 'search') {
-        let searchString = '';
-        args.forEach(element => searchString += element + ' ');
-        fetch(`${config.api}/search.php?search=${searchString}`)
-            .then(response => {
-                return response.json();
-            }).then(response => {
-                if (response.length) {
-                    const index = Math.floor(Math.random() * response.length);
-                    message.channel.send(`${config.images}/${response[index]['img_path']}`)
-                }
-                else {
-                    message.channel.send('Sorry, no results!');
-                }
-            });
+        client.commands.get('search').execute(message, args);
     }
 });
