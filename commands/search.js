@@ -4,7 +4,8 @@ const config = require('../config.json');
 module.exports = {
     name: 'search',
     description: 'Search booru database for images with specified tags, and return a random result',
-    args: false,
+    usage: '<space-separated tags>',
+    args: true,
     execute(message, args) {
         let searchString = '';
         args.forEach(element => searchString += element + ' ');
