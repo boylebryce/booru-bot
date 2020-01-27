@@ -32,7 +32,7 @@ client.on('message', message => {
         return message.reply('I can\'t execute that command inside DMs!');
     }
 
-    if (command.args && !args.length) {
+    if (command.argsRequired && !args.length) {
         let reply = `You didn't provide any arguments, ${message.author}!`;
 
         if (command.usage) {

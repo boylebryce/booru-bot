@@ -6,7 +6,7 @@ module.exports = {
     description: 'Search booru database for images with specified tags, and return a random result',
     guildOnly: false,
     usage: '<space-separated tags>',
-    args: true,
+    argsRequired: true,
     execute(message, args) {
         let searchString = '';
         args.forEach(element => searchString += element + ' ');
